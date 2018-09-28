@@ -21,42 +21,43 @@
 
 
 "use strict";
+const DEPLOYMENT_STAGE = 'development';
 const Alexa = require("alexa-sdk");
-
 // For detailed tutorial on how to make an Alexa skill,
 // please visit us at http://alexa.design/build
 
-let handlers = {
-    "LaunchRequest": function () {
-        console.log("in LaunchRequest");
-        this.response.speak("Welcome to Decision Tree. I will recommend the best job for you. Do you want to start your career or be a couch potato?");
+let handlers =
+    {
+      'LaunchRequest': function() {
+        console.log(`${DEPLOYMENT_STAGE}: ` + "in LaunchRequest");
+        this.response.speak(`Welcome to ${DEPLOYMENT_STAGE} Decision Tree. I will recommend the best job for you. Do you want to start your career or be a couch potato?`);
         this.response.listen("Do you want a career or to be a couch potato?");
         this.emit(":responseReady");
-    },
-    "CouchPotatoIntent": function () {
+      },
+      'CouchPotatoIntent': function() {
 
         this.response.speak("You don't want to start your career? Have fun wasting away on the couch.");
         this.emit(":responseReady");
-    },
-    "RecommendationIntent": function () {
+      },
+      'RecommendationIntent': function() {
         // delegate to Alexa to collect all the required slots
 
         let filledSlots = delegateSlotCollection.call(this);
 
         if (!filledSlots) {
-            return;
+          return;
         }
 
-        console.log("filled slots: " + JSON.stringify(filledSlots));
+        console.log(`${DEPLOYMENT_STAGE}: ` + "filled slots: " + JSON.stringify(filledSlots));
         // at this point, we know that all required slots are filled.
         let slotValues = getSlotValues(filledSlots);
 
-        console.log(JSON.stringify(slotValues));
+        console.log(`${DEPLOYMENT_STAGE}: ` + JSON.stringify(slotValues));
 
         let key = `${slotValues.salaryImportance.resolved}-${slotValues.personality.resolved}-${slotValues.bloodTolerance.resolved}-${slotValues.preferredSpecies.resolved}`;
         let occupation = options[slotsToOptionsMap[key]];
 
-        console.log("look up key: ", key, "object: ", occupation);
+        console.log(`${DEPLOYMENT_STAGE}: ` + "look up key: ", key, "object: ", occupation);
 
         let speechOutput = "So you want to be " + slotValues.salaryImportance.resolved +
                 ". You are an " + slotValues.personality.resolved +
@@ -65,41 +66,46 @@ let handlers = {
                 " tolerate blood " +
                 ". You should consider being a " + occupation.name;
 
-        console.log("Speech output: ", speechOutput);
+        console.log(`${DEPLOYMENT_STAGE}: ` + "Speech output: ", speechOutput);
         this.response.speak(speechOutput);
         this.emit(":responseReady");
 
-    },
-    "SessionEndedRequest": function () {
-        console.log("Session ended with reason: " + this.event.request.reason);
-    },
-    "AMAZON.StopIntent": function () {
+      },
+      'SessionEndedRequest': function() {
+        console.log(`${DEPLOYMENT_STAGE}: ` + "Session ended with reason: " + this.event.request.reason);
+      },
+      'AMAZON.StopIntent': function() {
         this.response.speak("Bye");
         this.emit(":responseReady");
-    },
-    "AMAZON.HelpIntent": function () {
-        this.response.speak("This is Decision Tree. I can help you find the perfect job. " +
-           "You can say, recommend a job.").listen("Would you like a career or do you want to be a couch potato?");
+      },
+      'AMAZON.HelpIntent': function() {
+        this.response
+            .speak(
+                `${DEPLOYMENT_STAGE} ` +
+                'This is Decision Tree. I can help you find the perfect job. ' +
+                'You can say, recommend a job.')
+            .listen(
+                'Would you like a career or do you want to be a couch potato?');
         this.emit(":responseReady");
-    },
-    "AMAZON.CancelIntent": function () {
+      },
+      'AMAZON.CancelIntent': function() {
         this.response.speak("Bye");
         this.emit(":responseReady");
-    },
-    "Unhandled": function () {
+      },
+      'Unhandled': function() {
         this.response.speak("Sorry, I didn't get that. You can try: 'alexa, tell Decision Tree to" +
             " recommend a job.'");
-    }
-};
+      }
+    };
 
 exports.handler = function (event, context) {
 
     // Each time your lambda function is triggered from your skill,
     // the event's JSON will be logged. Check Cloud Watch to see the event.
     // You can copy the log from Cloud Watch and use it for testing.
-    console.log("====================");
-    console.log("REQUEST: " + JSON.stringify(event));
-    console.log("====================");
+    console.log(`${DEPLOYMENT_STAGE}: ` + "====================");
+    console.log(`${DEPLOYMENT_STAGE}: ` + 'REQUEST: ' + JSON.stringify(event));
+    console.log(`${DEPLOYMENT_STAGE}: ` + "====================");
     let alexa = Alexa.handler(event, context);
 
     // Part 3: Task 4
@@ -184,13 +190,15 @@ function getSlotValues(filledSlots) {
     //and if it's a word that is in your slot values - .isValidated
     let slotValues = {};
 
-    console.log("The filled slots: " + JSON.stringify(filledSlots));
+    console.log(`${DEPLOYMENT_STAGE}: ` +
+        `${DEPLOYMENT_STAGE}: ` +
+        'The filled slots: ' + JSON.stringify(filledSlots));
     Object.keys(filledSlots).forEach(function (item) {
 
-        // console.log("item in filledSlots: "+JSON.stringify(filledSlots[item]));
+        // console.log(`${DEPLOYMENT_STAGE}: ` + "item in filledSlots: "+JSON.stringify(filledSlots[item]));
 
         let name = filledSlots[item].name;
-        //console.log("name: "+name);
+        //console.log(`${DEPLOYMENT_STAGE}: ` + "name: "+name);
 
         if (filledSlots[item] &&
              filledSlots[item].resolutions &&
@@ -223,7 +231,7 @@ function getSlotValues(filledSlots) {
         }
     },this);
 
-    //console.log("slot values: "+JSON.stringify(slotValues));
+    //console.log(`${DEPLOYMENT_STAGE}: ` + "slot values: "+JSON.stringify(slotValues));
     return slotValues;
 }
 
@@ -231,30 +239,30 @@ function getSlotValues(filledSlots) {
 // For more information about dialog directives see the link below.
 // https://developer.amazon.com/docs/custom-skills/dialog-interface-reference.html
 function delegateSlotCollection() {
-    console.log("in delegateSlotCollection");
-    console.log("current dialogState: " + this.event.request.dialogState);
+    console.log(`${DEPLOYMENT_STAGE}: ` + "in delegateSlotCollection");
+    console.log(`${DEPLOYMENT_STAGE}: ` + "current dialogState: " + this.event.request.dialogState);
 
     if (this.event.request.dialogState === "STARTED") {
-        console.log("in STARTED");
-        console.log(JSON.stringify(this.event));
+        console.log(`${DEPLOYMENT_STAGE}: ` + "in STARTED");
+        console.log(`${DEPLOYMENT_STAGE}: ` + JSON.stringify(this.event));
         let updatedIntent = this.event.request.intent;
         // optionally pre-fill slots: update the intent object with slot values
         // for which you have defaults, then return Dialog.Delegate with this
         // updated intent in the updatedIntent property
 
         disambiguateSlot.call(this);
-        console.log("disambiguated: " + JSON.stringify(this.event));
+        console.log(`${DEPLOYMENT_STAGE}: ` + "disambiguated: " + JSON.stringify(this.event));
         this.emit(":delegate", updatedIntent);
     } else if (this.event.request.dialogState !== "COMPLETED") {
-        console.log("in not completed");
+        console.log(`${DEPLOYMENT_STAGE}: ` + "in not completed");
         let updatedIntent = this.event.request.intent;
-        //console.log(JSON.stringify(this.event));
+        //console.log(`${DEPLOYMENT_STAGE}: ` + JSON.stringify(this.event));
 
         disambiguateSlot.call(this);
         this.emit(":delegate", updatedIntent);
     } else {
-        console.log("in completed");
-        //console.log("returning: "+ JSON.stringify(this.event.request.intent));
+        console.log(`${DEPLOYMENT_STAGE}: ` + "in completed");
+        //console.log(`${DEPLOYMENT_STAGE}: ` + "returning: "+ JSON.stringify(this.event.request.intent));
         // Dialog is now complete and all required slots should be filled,
         // so call your normal intent handler.
         return this.event.request.intent.slots;
@@ -300,7 +308,7 @@ function disambiguateSlot() {
             } else if (currentSlot.resolutions.resolutionsPerAuthority[0].status.code === "ER_SUCCESS_NO_MATCH") {
                 // Here is where you'll want to add instrumentation to your code
                 // so you can capture synonyms that you haven't defined.
-                console.log("NO MATCH FOR: ", currentSlot.name, " value: ", currentSlot.value);
+                console.log(`${DEPLOYMENT_STAGE}: ` + "NO MATCH FOR: ", currentSlot.name, " value: ", currentSlot.value);
 
                 if (REQUIRED_SLOTS.indexOf(currentSlot.name) > -1) {
                     prompt = "What " + currentSlot.name + " are you looking for";
@@ -318,7 +326,7 @@ function slotHasValue(request, slotName) {
     let slot = request.intent.slots[slotName];
 
     // uncomment if you want to see the request
-    // console.log("request = "+JSON.stringify(request));
+    // console.log(`${DEPLOYMENT_STAGE}: ` + "request = "+JSON.stringify(request));
     let slotValue;
 
     // if we have a slot, get the text and store it into speechOutput
