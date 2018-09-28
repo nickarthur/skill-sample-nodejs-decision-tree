@@ -22,7 +22,7 @@
 
 
 'use strict';
-const DEPLOYMENT_STAGE = 'development';
+const DEPLOYMENT_STAGE = 'stage';
 const Alexa = require('alexa-sdk');
 // For detailed tutorial on how to make an Alexa skill,
 // please visit us at http://alexa.design/build
