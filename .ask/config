@@ -1,19 +1,20 @@
 {
   "deploy_settings": {
-    "default": {
-      "skill_id": "",
+    "dev": {
+      "skill_id": "amzn1.ask.skill.eaded35f-9fc7-4179-963a-c20bd5faca7a",
       "was_cloned": false,
       "merge": {
-        "skillManifest": {
+        "manifest": {
           "apis": {
             "custom": {
               "endpoint": {
-                "uri": "ask-custom-DecisionTree-default"
+                "uri": "ask-custom-DEV-Decision_Tree-dev"
               }
             }
           }
         }
-      }
+      },
+      "in_skill_products": []
     }
   }
 }
