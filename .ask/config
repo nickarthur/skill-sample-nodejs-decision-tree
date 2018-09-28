@@ -15,6 +15,22 @@
         }
       },
       "in_skill_products": []
+    },
+    "default": {
+      "skill_id": "amzn1.ask.skill.b43e8fdc-a5ec-4c8c-aa57-efb36ce984b5",
+      "was_cloned": false,
+      "merge": {
+        "manifest": {
+          "apis": {
+            "custom": {
+              "endpoint": {
+                "uri": "ask-custom-DEV-Decision_Tree-default"
+              }
+            }
+          }
+        }
+      },
+      "in_skill_products": []
     }
   }
 }
