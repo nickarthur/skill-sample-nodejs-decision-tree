@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "dev decision tree",
+      "invocationName": "development decision tree",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
