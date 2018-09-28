@@ -14,6 +14,22 @@
           }
         }
       }
+    },
+    "test": {
+      "skill_id": "amzn1.ask.skill.33a360a9-24c0-4531-8fec-8998f986b77d",
+      "was_cloned": false,
+      "merge": {
+        "manifest": {
+          "apis": {
+            "custom": {
+              "endpoint": {
+                "uri": "ask-custom-TEST_Decision_Tree-test"
+              }
+            }
+          }
+        }
+      },
+      "in_skill_products": []
     }
   }
 }
