@@ -34,7 +34,7 @@ let handlers = {
             `${DEPLOYMENT_STAGE}: ` +
             'in LaunchRequest');
         this.response.speak(
-            `Welcome to ${DEPLOYMENT_STAGE} Decision Tree. I will recommend the best job for you. Do you want to start your career or be a couch potato?`);
+            `Yo! Welcome to ${DEPLOYMENT_STAGE} Decision Tree. I will recommend the best job for you. Do you want to start your career or be a couch potato?`);
         this.response.listen('Do you want a career or to be a couch potato?');
         this.emit(':responseReady');
     },
